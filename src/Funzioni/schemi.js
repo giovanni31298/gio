@@ -33,7 +33,7 @@ export const mySelect = (labelText, ref, func, arr) => {
       >
         {arr.map((el, i) => {
           return (
-            <option key={"tattica." + i} value={el}>
+            <option className="dark:bg-[--clr-ter]" key={"tattica." + i} value={el}>
               {el}
             </option>
           );

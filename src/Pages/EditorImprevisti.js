@@ -50,18 +50,38 @@ const EditorImprevisti = () => {
                 className="w-fit self-center rounded-md border p-1 text-xs font-semibold md:text-base dark:border-black/20 dark:bg-black/30 dark:text-gray-300 dark:placeholder-black/10 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               >
                 {isVisibleArray[0] && (
-                  <option value="prepartita">Prepartita</option>
+                  <option className="dark:bg-[--clr-ter]" value="prepartita">
+                    Prepartita
+                  </option>
                 )}
                 {isVisibleArray[1] && (
-                  <option value="settimana">Settimana</option>
+                  <option className="dark:bg-[--clr-ter]" value="settimana">
+                    Settimana
+                  </option>
                 )}
                 {isVisibleArray[2] && (
-                  <option value="serienegativa">Serie Negativa</option>
+                  <option className="dark:bg-[--clr-ter]" value="serienegativa">
+                    Serie Negativa
+                  </option>
                 )}
-                <option value="speciali">Speciali</option>
-                {isVisibleArray[3] && <option value="rinnovi">Rinnovi</option>}
-                {isVisibleArray[4] && <option value="ingaggi">Ingaggi</option>}
-                {isVisibleArray[5] && <option value="mercato">Mercato</option>}
+                <option className="dark:bg-[--clr-ter]" value="speciali">
+                  Speciali
+                </option>
+                {isVisibleArray[3] && (
+                  <option className="dark:bg-[--clr-ter]" value="rinnovi">
+                    Rinnovi
+                  </option>
+                )}
+                {isVisibleArray[4] && (
+                  <option className="dark:bg-[--clr-ter]" value="ingaggi">
+                    Ingaggi
+                  </option>
+                )}
+                {isVisibleArray[5] && (
+                  <option className="dark:bg-[--clr-ter]" value="mercato">
+                    Mercato
+                  </option>
+                )}
               </select>
             </label>
             <strong className="mt-2 block text-center text-xs font-semibold md:mt-0 md:w-1/3 md:text-end md:text-base">

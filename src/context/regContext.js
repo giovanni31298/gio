@@ -25,7 +25,7 @@ export const CartProvider = ({ children }) => {
     { id: 600, nomeSezione: "Mercato", isVisible: 1 },
   ];
 
-  const defaultThemeValue = [{ id: 1, theme: "dark" }];
+  const defaultThemeValue = [{ id: 1, theme: "dark-neon" }];
 
   useEffect(() => {
     const fetchData = async () => {

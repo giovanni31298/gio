@@ -17,36 +17,19 @@ export function AddImprevisti(props) {
     setRefState(ref.current.value);
   };
 
-  const disabledField = refState === "noImprevisto";
   const isListaSpeciali = tipoImprevisto === "speciali";
   const isListaSettimana = tipoImprevisto === "settimana";
 
   async function addImpr(data, e) {
     try {
-      const id = await db[tipoImprevisto].add(
-        isListaSpeciali
-          ? {
-              titolo: disabledField
-                ? "NESSUN IMPREVISTO"
-                : refState === "speciale"
-                  ? "IMPREVISTO SPECIALE"
-                  : data.titolo,
-              descrizione: refState === "imprevisto" ? data.descrizione : "",
-              isImprev: disabledField ? 0 : 1,
-              ultEstrazione: disabledField ? 0 : parseInt(data.ultEstrazione),
-              eliminaDopoEstrazione: parseInt(data?.eliminaDopoEstrazione),
-            }
-          : {
-              titolo: disabledField
-                ? "NESSUN IMPREVISTO"
-                : refState === "speciale"
-                  ? "IMPREVISTO SPECIALE"
-                  : data.titolo,
-              descrizione: refState === "imprevisto" ? data.descrizione : "",
-              isImprev: disabledField ? 0 : 1,
-              ultEstrazione: disabledField ? 0 : parseInt(data.ultEstrazione),
-            },
-      );
+      const id = await db[tipoImprevisto].add({
+        titolo: data.titolo,
+        descrizione: data.descrizione,
+        isImprev: 1,
+        ultEstrazione: parseInt(data.ultEstrazione),
+        eliminaDopoEstrazione:
+          isListaSpeciali && parseInt(data?.eliminaDopoEstrazione),
+      });
       console.log(id);
       e.target.reset();
     } catch (error) {
@@ -102,12 +85,12 @@ export function AddImprevisti(props) {
                 <span className="block h-full w-full bg-transparent">
                   {el.isImprev === 1 ? "SI" : "NO"}
                 </span>
-                <span className="block h-full w-full bg-transparent text-start ">
+                <span className="block h-full w-full bg-transparent text-start">
                   {el.titolo}
                 </span>
               </div>
               <div className="flex w-full flex-col justify-around py-1">
-                <div className="w-full h-full">
+                <div className="h-full w-full">
                   <span
                     className={`border-gray-300/20 bg-transparent p-1 ${isListaSpeciali ? "inline-block w-1/2" : "block w-full"}`}
                     style={isListaSettimana ? { visibility: "hidden" } : {}}
@@ -115,7 +98,7 @@ export function AddImprevisti(props) {
                     {el.ultEstrazione === 1 ? "SI" : "NO"}
                   </span>
                   {isListaSpeciali && (
-                    <span className="inline w-1/2 border-gray-300/20 bg-transparent p-1 ms-1">
+                    <span className="ms-1 inline w-1/2 border-gray-300/20 bg-transparent p-1">
                       {el.eliminaDopoEstrazione === 1 ? "SI" : "NO"}
                     </span>
                   )}
@@ -132,9 +115,8 @@ export function AddImprevisti(props) {
             </li>
           ))}
         </ul>
-
-        /* DESKTOP */
       ) : (
+        /* DESKTOP */
         <ul className="flex h-full w-full flex-col gap-1 overflow-y-auto rounded-lg border p-2">
           <div className="flex min-h-4 items-center justify-between gap-2 bg-gray-700/80 ps-2 text-center text-xs font-bold uppercase italic">
             <span className="h-full w-1/6 border-gray-300/20 bg-transparent p-1">
@@ -166,9 +148,9 @@ export function AddImprevisti(props) {
           {registro?.map((el) => (
             <li
               key={el.id}
-              className="text-md flex min-h-4 items-center justify-between gap-2 bg-gray-700/20 ps-2 text-center uppercase font-semibold hover:bg-[--clr-prim] hover:text-black"
+              className="text-md flex min-h-4 items-center justify-between gap-2 bg-gray-700/20 ps-2 text-center font-semibold uppercase hover:bg-[--clr-prim] hover:text-black"
             >
-              <span className="h-full w-1/6 rounded border border-gray-300/20 bg-transparent p-1 ">
+              <span className="h-full w-1/6 rounded border border-gray-300/20 bg-transparent p-1">
                 {el.isImprev === 1 ? "SI" : "NO"}
               </span>
               <span className="h-full w-1/6 rounded border border-gray-300/20 bg-transparent p-1 text-start">
@@ -208,12 +190,12 @@ export function AddImprevisti(props) {
           onSubmit={handleSubmitImprevisti(addImpr)}
           className="flex h-full w-full flex-col items-center justify-between gap-2 py-2 font-normal md:px-4"
         >
-          <h3 className="text-center uppercase text-[--clr-prim]">
+          <h3 className="text-center uppercase font-bold text-[--clr-prim]">
             Aggiungi il tuo imprevisto
           </h3>
           <label
             htmlFor="isImprev"
-            className="flex  w-full items-center justify-center gap-2 md:w-1/3"
+            className="flex w-full items-center justify-center gap-2 md:w-1/3"
           >
             Cosa vuoi inserire?
             {errorsImprevisti.isImprev && (
@@ -230,15 +212,17 @@ export function AddImprevisti(props) {
               onChange={handleRefState}
               className="w-fit self-center rounded-md border p-1 text-xs font-semibold md:text-sm dark:border-gray-300/80 dark:bg-black/30 dark:text-gray-300 dark:placeholder-black/10 dark:focus:border-blue-500 dark:focus:ring-blue-500"
             >
-              <option value="imprevisto">IMPREVISTO</option>
-              <option
-                className={`${isListaSpeciali && "hidden"}`}
+              <option className="dark:bg-[--clr-ter]" value="imprevisto">
+                IMPREVISTO
+              </option>
+              {/* <option
+                className={`dark:bg-[--clr-ter] ${isListaSpeciali && "hidden"}`}
                 value="noImprevisto"
               >
                 NESSUN IMPREVISTO
-              </option>
+              </option> */}
               <option
-                className={`${tipoImprevisto === "prepartita" || isListaSettimana ? "visible" : "hidden"}`}
+                className={`dark:bg-[--clr-ter] ${tipoImprevisto === "prepartita" || isListaSettimana ? "visible" : "hidden"}`}
                 value="speciale"
               >
                 IMPREVISTO SPECIALE
@@ -261,16 +245,11 @@ export function AddImprevisti(props) {
                 <input
                   name="titolo"
                   {...registerImprevisti("titolo", {
-                    required: disabledField ? false : true,
+                    required: true,
                     maxLength: 20,
                   })}
-                  disabled={disabledField}
                   className="block w-2/3 rounded p-1 text-xs font-semibold uppercase text-black placeholder:normal-case placeholder:italic disabled:placeholder:text-black md:w-1/3 md:text-sm"
-                  placeholder={
-                    disabledField
-                      ? "NESSUN IMPREVISTO"
-                      : "Titolo dell'imprevisto"
-                  }
+                  placeholder={"Titolo dell'imprevisto"}
                 />
               ) : (
                 <input
@@ -300,7 +279,7 @@ export function AddImprevisti(props) {
                   <label htmlFor="ultEstrazioneYES">Sì</label>
                   <input
                     {...registerImprevisti("ultEstrazione")}
-                    disabled={disabledField || refState === "speciale"}
+                    disabled={refState === "speciale"}
                     id="ultEstrazioneYES"
                     name="ultEstrazione"
                     defaultChecked
@@ -311,7 +290,7 @@ export function AddImprevisti(props) {
                   <label htmlFor="ultEstrazioneNO">No</label>
                   <input
                     {...registerImprevisti("ultEstrazione")}
-                    disabled={disabledField || refState === "speciale"}
+                    disabled={refState === "speciale"}
                     id="ultEstrazioneNO"
                     name="ultEstrazione"
                     type="radio"
@@ -367,11 +346,10 @@ export function AddImprevisti(props) {
               <textarea
                 name="descrizione"
                 {...registerImprevisti("descrizione", {
-                  required:
-                    disabledField || refState === "speciale" ? false : true,
+                  required: true,
                 })}
                 rows={isMobile ? 3 : 4}
-                disabled={disabledField || refState === "speciale"}
+                disabled={refState === "speciale"}
                 id="descrizione"
                 placeholder="Descrizione dell'imprevisto"
                 className="w-full rounded p-1 font-semibold text-black placeholder:italic"
